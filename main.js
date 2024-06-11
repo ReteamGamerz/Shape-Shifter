@@ -1,3 +1,7 @@
+leftWristX = 0;
+rightWristX = 0;
+difference = 0;
+
 function setup() {
     video = createCapture(VIDEO);
     video.size(550, 500);
@@ -9,20 +13,28 @@ function setup() {
     poseNet.on('pose', gotPoses);
 }
 
-function draw() {
-   background("#969A97");
-}
-
-function modelLoaded(error) {
-    if (modelLoaded == error) {
-        console.error(error);
-    } else {
-        console.log('PoseNet Is Initialised');
-    }
+function modelLoaded() {
+    console.log('PoseNet Is Initialised');
 }
 
 function gotPoses(results) {
     if (results.length > 0){
         console.log(results);
+
+        leftWristX = results[0].pose.leftWrist.x
+        rightWristX = results[0].pose.rightWrist.x
+        difference = floor(leftWristX - rightWristX)
     }
 }
+
+function draw() {
+    background('red')
+    document.getElementById("font_size").innerHTML = "Font size Will BE _> " + difference
+    textSize(difference)
+    fill('white')
+    text("Vihaan", 100, 100)
+
+}
+
+
+
